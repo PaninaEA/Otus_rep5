@@ -1,2 +1,2 @@
 # Otus_rep5
-Test Web - selenium, wait elements
+Test Web - selenium, wait elements, pageobject
