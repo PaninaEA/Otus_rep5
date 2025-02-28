@@ -11,8 +11,9 @@ def pytest_addoption(parser):
         help="Base url for tests",
     )
     parser.addoption("--headless", action="store_true", default="true")
-    parser.addoption("--login", type=str, default="user", help="Login of admin")
-    parser.addoption("--pwd", type=str, default="bitnami", help="Pwd of admin")
+    parser.addoption(
+        "--login:pwd", type=str, default="user:bitnami", help="login:password for admin"
+    )
 
 
 @pytest.fixture
@@ -25,11 +26,6 @@ def browser(request):
         if headless:
             options.add_argument("--headless=new")
         driver = webdriver.Chrome(options=options)
-    elif browser_name in ["firefox", "ff"]:
-        options = webdriver.FirefoxOptions()
-        if headless:
-            options.add_argument("--headless")
-        driver = webdriver.Firefox(options=options)
     elif browser_name in ["yandex", "ya"]:
         options = webdriver.ChromeOptions()
         binary_yandex_driver_file = (
@@ -44,14 +40,10 @@ def browser(request):
     driver.maximize_window()
     request.addfinalizer(driver.quit)
     driver.url = url
+    driver.get(url)
     return driver
 
 
 @pytest.fixture
-def get_login(request):
-    return request.config.getoption("--login")
-
-
-@pytest.fixture
-def get_password(request):
-    return request.config.getoption("--pwd")
+def get_login_pass(request):
+    return request.config.getoption("--login:pwd")

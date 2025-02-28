@@ -1,40 +1,16 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
+from page_objects.catalog_page import CatalogPage
 
 
 def test_find_elements(browser):
-    browser.get(browser.url + "/en-gb/catalog/desktops")
-    wait = WebDriverWait(browser, 2)
-    browser.find_element(
-        By.CSS_SELECTOR, "div.list-group.mb-3 > a.list-group-item.active"
-    )  # выбранный пункт меню
-    wait.until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, "#compare-total"))
-    )  # кнопка сравнения
-    sort_element = Select(
-        wait.until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, "select#input-sort"))
-        )
-    )  # поле сортировки
-    sort_element.select_by_visible_text(
-        "Price (Low > High)"
-    )  # один из вариантов сортировки
-    wait.until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, "div.product-thumb"))
-    )  # карточка товара
+    CatalogPage(browser).open_desktops_catalog()
+    CatalogPage(browser).current_menu_item()
+    CatalogPage(browser).compare_button()
+    CatalogPage(browser).sort_selection()
+    CatalogPage(browser).product_card()
 
 
-def test_catalog_menu(browser):
-    wait = WebDriverWait(browser, 2)
-    browser.get(browser.url + "/en-gb/catalog/component")
-    wait.until(
-        EC.visibility_of_element_located(
-            (By.CSS_SELECTOR, "div.list-group.mb-3 > a[href$='component']")
-        )
-    )  # каталог components
-    catalog_menu = browser.find_elements(
-        By.CSS_SELECTOR, "div.list-group.mb-3 > a[href*='component/']"
-    )  # подразделы каталога components
-    assert len(catalog_menu) == 5, "В каталоге Components должно быть 5 пунктов"
+def test_number_of_desktops_categories(browser):
+    CatalogPage(browser).open_desktops_catalog()
+    assert len(CatalogPage(browser).categories_of_desktops()) == 2, (
+        "В каталоге Desktops должно быть 2 категории"
+    )
