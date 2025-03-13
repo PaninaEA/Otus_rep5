@@ -67,11 +67,15 @@ class AdminPage(BasePage):
         self.click((By.CSS_SELECTOR, "div.float-end > a.btn.btn-primary"))
         self.logger.info(f"{self.class_name}: Input product data")
         self.input((By.CSS_SELECTOR, "#input-name-1"), product_data["product_name"])
+        self.scroll_to_element((By.CSS_SELECTOR, "#input-meta-title-1"))
         self.input(
             (By.CSS_SELECTOR, "#input-meta-title-1"), product_data["meta_tag_title"]
         )
+        self.scroll_to_element((By.CSS_SELECTOR, "li.nav-item > a[href='#tab-data']"))
         self.click((By.CSS_SELECTOR, "li.nav-item > a[href='#tab-data']"))
+
         self.input((By.CSS_SELECTOR, "#input-model"), product_data["model"])
+        self.scroll_to_element((By.CSS_SELECTOR, "li.nav-item > a[href='#tab-seo']"))
         self.click((By.CSS_SELECTOR, "li.nav-item > a[href='#tab-seo']"))
         self.input((By.CSS_SELECTOR, "#input-keyword-0-1"), product_data["seo"])
         self.logger.info(f"{self.class_name}: Click add product button")
@@ -84,6 +88,7 @@ class AdminPage(BasePage):
         self.logger.info(f"{self.class_name}: Find product in catalog")
         self.input((By.CSS_SELECTOR, "#filter-product #input-name"), product_name)
         self.click((By.CSS_SELECTOR, "#filter-product #button-filter"))
+        self.get_element((By.CSS_SELECTOR, "*[data-oc-load*='filter_name']"))
         return self.check_element_exists(
             (By.CSS_SELECTOR, "#form-product tbody td.text-start")
         )

@@ -13,14 +13,14 @@ def test_find_elements(browser):
 
 
 @allure.feature("Find elements")
-@allure.story("Admin page")
+@allure.story("Main page")
 @allure.title("Number of main menu items")
 def test_number_of_menu_items(browser):
     assert len(MainPage(browser).menu_items()) == 8, "В меню должно быть 8 пунктов"
 
 
 @allure.feature("Find elements")
-@allure.story("Admin page")
+@allure.story("Main page")
 @allure.title("Number of drop-down lists in main menu")
 def test_number_of_dropdown_menu(browser):
     assert len(MainPage(browser).dropdown_menu()) == 4, (
@@ -29,7 +29,7 @@ def test_number_of_dropdown_menu(browser):
 
 
 @allure.feature("Find elements")
-@allure.story("Admin page")
+@allure.story("Main page")
 @allure.title("Number of items in menu for MP3 Players")
 def test_number_of_menu_players_items(browser):
     assert len(MainPage(browser).dropdown_menu_for_players()) == 18, (
