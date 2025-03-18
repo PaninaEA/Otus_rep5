@@ -7,6 +7,12 @@ class ProductPage(BasePage):
     @allure.step("Открываю страницу продукта {product_name}")
     def open_product_page(self, product_name):
         self.logger.info(f"{self.class_name}: Open page for product {product_name}")
+        self.scroll_to_element(
+            (
+                By.CSS_SELECTOR,
+                "div.row.row-cols-1.row-cols-sm-2.row-cols-md-3.row-cols-xl-4",
+            )
+        )
         self.click(
             (By.CSS_SELECTOR, f"div.description > h4 > a[href$='{product_name}']")
         )

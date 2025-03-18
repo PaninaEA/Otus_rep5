@@ -40,6 +40,7 @@ class UserPage(BasePage):
             (By.CSS_SELECTOR, "input#input-password.form-control"),
             user_data["password"],
         )
+        self.scroll_to_element((By.CSS_SELECTOR, "div.text-end"))
         self.click((By.NAME, "agree"))
         self.logger.info(f"{self.class_name}: Click button for register")
         self.click((By.CSS_SELECTOR, "div.text-end > button[type='submit']"))

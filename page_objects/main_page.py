@@ -1,4 +1,5 @@
 import allure
+from currency_symbols import CurrencySymbols
 from selenium.webdriver.common.by import By
 
 from page_objects.base_page import BasePage
@@ -46,10 +47,17 @@ class MainPage(BasePage):
         self.logger.info(f"{self.class_name}: Find some product on main page")
         return self.get_element((By.CSS_SELECTOR, "div.product-thumb h4 a"))
 
+    @allure.step("Нажимаю на продукт на главной странице")
+    def click_product_on_main_page(self):
+        self.logger.info(f"{self.class_name}: Click product on main page")
+        product_active = self.get_element((By.CSS_SELECTOR, "div.carousel-item.active"))
+        product_active.click()
+
     @allure.step("Добавляю продукт c главной страницы в корзину")
     def add_product_to_cart(self):
         product_name = self.get_some_product_on_main_page().text
         self.logger.info(f"{self.class_name}: Add product {product_name} to cart")
+        self.scroll_to_element((By.CSS_SELECTOR, "div.button-group"))
         self.click((By.CSS_SELECTOR, "button[formaction$='cart.add']"))
         self.click((By.CSS_SELECTOR, "#alert button.btn-close"))
         return product_name
@@ -57,6 +65,7 @@ class MainPage(BasePage):
     @allure.step("Проверяю продукт в корзине")
     def get_product_in_cart(self):
         self.logger.info(f"{self.class_name}: Check product in cart")
+        self.scroll_to_element((By.CSS_SELECTOR, "header"))
         self.click((By.XPATH, "//button[contains(text(),'item(s)')]"))
         return self.get_element((By.CSS_SELECTOR, "td.text-start > a")).text
 
@@ -85,3 +94,6 @@ class MainPage(BasePage):
         self.logger.info(f"{self.class_name}: Change currency to {currency}")
         self.click((By.CSS_SELECTOR, "#form-currency"))
         self.click((By.CSS_SELECTOR, f"li > a[href='{currency}']"))
+        self.get_element(
+            (By.XPATH, f"//strong[text()='{CurrencySymbols.get_symbol(currency)}']")
+        )

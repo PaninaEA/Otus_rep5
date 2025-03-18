@@ -16,7 +16,7 @@ def test_change_currency(browser, currency):
     currency_in_main_menu = MainPage(browser).currency.text
     price_on_main_page = MainPage(browser).product_price.text
     price_in_cart = MainPage(browser).price_in_cart.text
-    MainPage(browser).get_some_product_on_main_page().click()
+    MainPage(browser).click_product_on_main_page()
     price_on_product_page = ProductPage(browser).price.text
     assert currency_in_main_menu == CurrencySymbols.get_symbol(currency), (
         "Валюта в меню на главной странице не изменилась"

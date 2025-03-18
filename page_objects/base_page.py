@@ -1,3 +1,5 @@
+import time
+
 from selenium.common import TimeoutException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
@@ -15,6 +17,12 @@ class BasePage:
         return WebDriverWait(self.browser, timeout).until(
             EC.visibility_of_element_located(locator)
         )
+
+    def scroll_to_element(self, locator: tuple, timeout=2):
+        self.logger.debug("%s: Scroll to element: %s" % (self.class_name, str(locator)))
+        element_for_scroll = self.get_element(locator)
+        element_for_scroll.location_once_scrolled_into_view
+        time.sleep(0.5)
 
     def get_elements(self, locator: tuple, timeout=2):
         self.logger.debug("%s: Find elements: %s" % (self.class_name, str(locator)))
