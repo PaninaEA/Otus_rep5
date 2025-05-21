@@ -12,7 +12,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--base_url",
         type=str,
-        default="http://192.168.0.104:8081",
+        default="http://192.168.0.108:8081",
         help="Base url for tests",
     )
     parser.addoption("--headless", action="store_true", default="true")
@@ -20,7 +20,7 @@ def pytest_addoption(parser):
         "--login:pwd", type=str, default="user:bitnami", help="login:password for admin"
     )
     parser.addoption("--log_level", action="store", default="INFO")
-    parser.addoption("--executor", action="store", default="192.168.0.104")
+    parser.addoption("--executor", action="store", default="192.168.0.108")
     parser.addoption("--logs", action="store_true")
 
 
