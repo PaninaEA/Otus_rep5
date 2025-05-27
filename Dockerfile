@@ -10,4 +10,4 @@ RUN apt update && apt install -y netcat-traditional
 
 COPY . /tests
 
-CMD ["pytest"]
+ENTRYPOINT ["pytest"]
