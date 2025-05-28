@@ -13,7 +13,7 @@ stages {
      stage('Build image') {
             steps {
                 script {
-                    sh 'docker build -t opencart-tests .'
+                    sh 'docker build --rm -t opencart-tests .'
                 }
             }
         }
@@ -21,7 +21,7 @@ stages {
             steps {
                 script {
                     sh 'git config --global --add safe.directory "/var/jenkins_home/workspace/Test_opencart"'
-                    sh "docker run opencart-tests -n ${params.THREADS} --browser ${params.BROWSER} --ver ${params.BROWSER_VERSION} --base_url ${params.OPENCART_URL} --executor ${params.SELENOID_URL}"
+                    sh "docker run --rm opencart-tests -n ${params.THREADS} --browser ${params.BROWSER} --ver ${params.BROWSER_VERSION} --base_url ${params.OPENCART_URL} --executor ${params.SELENOID_URL}"
                 }
             }
         }
