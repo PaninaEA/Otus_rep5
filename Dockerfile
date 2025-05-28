@@ -1,13 +1,12 @@
 FROM python:3.11
 
-WORKDIR /tests
+WORKDIR /app
 
-COPY requirements.txt /tests/
+COPY requirements.txt /app/
 
 RUN pip config set global.trusted-host "pypi.org files.pythonhosted.org"
 RUN pip install -r requirements.txt
-RUN apt update && apt install -y netcat-traditional
 
-COPY . /tests
+COPY . /app
 
 ENTRYPOINT ["pytest"]
