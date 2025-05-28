@@ -1,28 +1,40 @@
 pipeline {
-    agent {
-      docker { 
-        image 'python:3.11'
-      }
-    }
+     agent any
+
     parameters {
-        string(name: 'SELENOID_URL')
-        string(name: 'OPENCART_URL')
-        string(name: 'BROWSER')
-        string(name: 'BROWSER_VERSION')
-        string(name: 'THREADS')
+        string(name: 'SELENOID_URL', defaultValue: '192.168.0.108')
+        string(name: 'OPENCART_URL', defaultValue: 'http://192.168.0.108:8081')
+        string(name: 'BROWSER', defaultValue: 'chrome')
+        string(name: 'BROWSER_VERSION', defaultValue: '128.0')
+        string(name: 'THREADS', defaultValue: '3')
     }
+
 stages {
-      stage('Run Tests') {
+     stage('Build image') {
             steps {
                 script {
-                    sh 'python3 -m pip config set global.trusted-host "pypi.org files.pythonhosted.org"'
-                    sh 'python3 -m pip install -r requirements.txt'
-                    sh 'pytest --browser ${params.BROWSER} --ver ${params.BROWSER_VERSION} --threads ${params.THREADS} --base_url ${params.OPENCART_URL} --executor ${params.SELENOID_URL}'
+                    sh 'docker build -t opencart-tests .'
                 }
             }
         }
-}
-      
+      stage('Run Tests') {
+            steps {
+                script {
+                    sh 'git config --global --add safe.directory "/var/jenkins_home/workspace/Test_opencart"'
+                    sh "docker run opencart-tests -n ${params.THREADS} --browser ${params.BROWSER} --ver ${params.BROWSER_VERSION} --base_url ${params.OPENCART_URL} --executor ${params.SELENOID_URL}"
+                }
+            }
+        }
 
-    
+        stage('Allure Report') {
+            steps {
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    results: [[path: 'Test_opencart/allure-results']]
+                ])
+            }
+        }
+    }
+
 }
