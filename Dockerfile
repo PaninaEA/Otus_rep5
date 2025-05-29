@@ -1,12 +1,7 @@
-FROM python:3.11
+FROM python:latest
 
-WORKDIR /app
+RUN apt-get update
+RUN apt-get install -y openjdk-17-jdk
 
-COPY requirements.txt /app/
-
-RUN pip config set global.trusted-host "pypi.org files.pythonhosted.org"
-RUN pip install -r requirements.txt
-
-COPY . /app
-
-ENTRYPOINT ["pytest"]
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH"
